@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-3xl font-bold underline">
     여기가 index 페이지입니다.
   </div>
 </template>
