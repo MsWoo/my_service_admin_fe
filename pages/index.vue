@@ -19,7 +19,7 @@ $hello('world')
 
 <template>
   <Alert/>
-  <ProfileHeaderAvatar/>
+<!--  <ProfileHeaderAvatar/>-->
   <div>Mouse Position : {{x}}, {{y}}</div>
   <img src="@/assets/images/400.png">
   <img src="@/public/images/boot.png">
