@@ -1,18 +1,26 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  nitro: {
-    routeRules: {
-      "/api/v1/**": {
-        proxy: "http://localhost:8080/api/v1/**",
-      }
-    }
+  ssr: true,
+  routeRules: {
+    'login/**': { ssr: false }
   },
   devtools: {enabled: true},
   runtimeConfig: {
     public: {
-      // apiEndpoint: process.env.NUXT_API_ENDPOINT
-      apiEndpoint: 'http://localhost:8080'
+      apiEndpoint: 'http://localhost:3000'
     }
+  },
+  vite: {
+    server: {
+      proxy: {
+        '/api/v1/': {
+          target: 'http://localhost:8080',
+          changeOrigin: true,
+          secure: false,
+          ws: true
+        }
+      }
+    },
   },
   modules: [
     '@vueuse/nuxt',
