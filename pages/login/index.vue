@@ -1,11 +1,12 @@
 <script setup>
-import {postLogin} from "@/composables/api/loginAPI/api.ts";
+import {postLogin} from "~/composables/api/loginAPI/api";
 
 definePageMeta({
-  layout: "custom2"
+  layout: false
 })
 
-const token = useCookie('token')
+// const token = document.cookie.split('; ').find(row => row.startsWith('accessToken='))?.split('=')[1];
+const token = useCookie('accessToken');
 
 const pageState = ref({
   isSaveId: false,
@@ -13,17 +14,17 @@ const pageState = ref({
   userPw: null
 });
 
-const handleLogin = () => {
+
+const handleLogin = async () => {
   try {
-    const res = postLogin({
+    const res = await postLogin({
       userId: pageState.value.userId,
       password: pageState.value.userPw
     });
 
     if (res.result) {
       if (res.data) {
-        // handleSaveId(pageState.value.isSaveId, pageState.value.userId);
-        // window.location.reload();
+        window.location.reload();
       }
     } else {
       token.value = null;
@@ -37,14 +38,6 @@ const handleChangePageState = (key, value) => {
   pageState.value[key] = value;
 };
 
-const handleSaveId = (isSaveId, userId) => {
-  if (!isSaveId) {
-    localStorage.removeItem('userId');
-    return;
-  }
-  localStorage.removeItem('userId');
-  localStorage.setItem('userId', userId);
-};
 
 </script>
 
@@ -52,18 +45,21 @@ const handleSaveId = (isSaveId, userId) => {
   <section class="section">
     <div class="login-box">
       <h2>Login</h2>
-      <form>
+      <form
+          autocomplete="off"
+          @submit.prevent
+      >
         <div class="user-box">
           <input :value="pageState.userId" type="text" name="" required=""
-                 v-on:change="handleChangePageState('userId', 'test')">
+                 v-on:change="handleChangePageState('userId', $event.target.value)">
           <label>Username</label>
         </div>
         <div class="user-box">
           <input :value="pageState.userPw" type="password" name="" required=""
-                 v-on:change="handleChangePageState('userPw', 1234)">
+                 v-on:change="handleChangePageState('userPw', $event.target.value)">
           <label>Password</label>
         </div>
-        <Button class="button" @click="() => handleLogin()">
+        <Button class="button" @click="handleLogin">
           <span></span>
           <span></span>
           <span></span>

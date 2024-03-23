@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const token = useCookie('token');
+const token = useCookie('accessToken');
+
+const handleLogout = () => {
+  token.value = null
+  navigateTo('/')
+}
 </script>
 
 <template>
@@ -12,12 +17,12 @@ const token = useCookie('token');
       </NuxtLink>
     </div>
     <div class="hidden w-full navbar-menu lg:order-3 lg:block lg:w-2/5 lg:text-right">
-      <NuxtLink to="/login" v-if="!token" class="block mt-4 mr-4 lg:inline-block lg:mt-0 hover:font-bold hover:underline">
+      <NuxtLink to="/login" v-if="!token" class="block mt-4 mr-4  lg:inline-block lg:mt-0 hover:font-bold">
         로그인
       </NuxtLink>
-      <NuxtLink to="/logout" v-if="token" class="block mt-4 mr-4 lg:inline-block lg:mt-0 hover:font-bold hover:underline">
+      <button @click="handleLogout" v-if="token" class="block mt-4 mr-4 lg:inline-block lg:mt-0 hover:font-bold">
         로그아웃
-      </NuxtLink>
+      </button>
     </div>
   </nav>
 
